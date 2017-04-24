@@ -1,0 +1,670 @@
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''built in functions'''
+def index():
+   
+    return dict(message=T('Welcome to web2py!'))
+
+
+def user():
+    return dict(form=auth())
+
+
+@cache.action()
+def download():
+    return response.download(request, db)
+
+
+def call():
+    return service()
+
+def test():
+    return locals()
+
+
+
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Selectors for pre formatting'''
+
+def yearkey(n):
+    if n==1:
+        return 2014
+    elif n==2:
+        return 2015
+
+def yearkey2(n):
+    if n==1:
+        return 2013
+    elif n==2:
+        return 2014
+    elif n==3:
+        return 2015
+
+def datakey(n):
+    if n==1:
+        return "rTemp"
+    elif n==2:
+        return "Press"
+    elif n==3:
+        return "rWind"
+    elif n==4:
+        return "Humidity"
+    elif n==5:
+        return "rRain"
+def label(n):
+    if n==1:
+        return "Temperature"
+    elif n==2:
+        return "Pressure"
+    elif n==3:
+        return "Wind"
+    elif n==4:
+        return "Humidity"
+    elif n==5:
+        return "Rain"
+
+
+
+
+
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Database selectors'''
+
+def daydata(a):
+    mdate=a
+    rows=[]
+    if a[0:4]=='2014' or a[0:4]=='2013':
+        rows=db(db.weath14.rdate==mdate).select()
+    elif a[0:4]=='2015':
+        rows=db(db.weath15.rdate==mdate).select()
+    
+    return rows
+
+def monthdata(m,y):
+    rows=[]
+    s=''
+    if y==2014 or y==2013:
+        s=(db.weath14.rdate.month()==m)&(db.weath14.rdate.year()==y)
+    elif y==2015:
+        s=(db.weath15.rdate.month()==m)&(db.weath15.rdate.year()==y)
+    rows=db(s).select()
+    return rows
+
+def yeardata(y):
+    rows=[]
+    if y==2013 or y==2014:
+        rows=db(db.weath14.rdate.year()==y).select()
+    elif y==2015:
+        rows=db(db.weath15.rdate.year()==y).select()
+
+    return rows
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+
+
+
+
+
+
+
+
+
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+'''Current Weather'''
+
+def curr():
+    rows=db(db.weath15.rdate.month()==5).select()
+    row=rows.last()
+    stemp=str(row.rTemp)
+    swind=str(row.rWind)
+    spress=str(row.Press)
+    shumid=str(row.Humidity)
+    srain=str(row.rRain)
+    dat=str(row.rdate)
+    tim=str(row.rTime)
+    return locals()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Main for Day'''
+
+def day():
+    nav = auth.navbar()
+    del nav[1:3]  
+    s=""
+    form=SQLFORM.factory(Field("Select_Date",'date'),Field('Data',requires=IS_EMPTY_OR(IS_IN_SET([(1,'Temperature'), (2,'Pressure'), (3,'Wind'), (4,'Humidity'), (5,'Rain')])))).process()
+    
+    if form.accepted:
+            redirect(URL('dayres',args=[form.vars.Select_Date,form.vars.Data]))
+    return locals()
+
+def dayres():
+    meandata=str(meancalcday(request.args[0],request.args[1]))
+    maxdata=str(maxcalcday(request.args[0],request.args[1]))
+    mindata=str(mincalcday(request.args[0],request.args[1]))
+    meddata=str(mediancalcday(request.args[0],request.args[1]))
+    devdata=str(devcalcday(request.args[0],request.args[1]))
+    s=label(int(request.args[1]))
+    return locals()
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Day Calculators'''
+
+def meancalcday(a,b):
+    s=datakey(int(b))
+    rows=daydata(a)
+    time1=rows.first().rTime.hour
+    mean=0.0
+    meandata=[]
+    count=0
+    lis=[]
+    for r in rows:
+        count=count+1
+        if r.rTime.hour!=time1:
+            lis.append(time1)
+            lis.append(round(mean/count,2))
+            meandata.append(lis)
+            count=0
+            mean=float(r[s])
+            lis=[]
+            time1=r.rTime.hour
+        else:
+            mean=mean+float(r[s])
+    lis.append(time1)
+    lis.append(round(mean/count,2))
+    meandata.append(lis)
+    return meandata
+
+def maxcalcday(a,b):
+    mdate=a
+    s=datakey(int(b))
+    rows=daydata(a)
+    time1=rows.first().rTime.hour
+    ma=0
+    meandata=[]
+    lis=[]
+    for r in rows:
+        if r.rTime.hour!=time1:
+            lis.append(time1)
+            lis.append(ma)
+            meandata.append(lis)
+            count=0
+            ma=int(r[s])
+            lis=[]
+            time1=r.rTime.hour
+        else:
+            if ma<int(r[s]):
+                ma=int(r[s])
+    lis.append(time1)
+    lis.append(ma)
+    meandata.append(lis)
+    return meandata
+
+def mincalcday(a,b):
+    mdate=a
+    s=datakey(int(b))
+    rows=daydata(a)
+    time1=rows.first().rTime.hour
+    ma=0
+    meandata=[]
+    lis=[]
+    for r in rows:
+        if r.rTime.hour!=time1:
+            lis.append(time1)
+            lis.append(ma)
+            meandata.append(lis)
+            count=0
+            ma=int(r[s])
+            lis=[]
+            time1=r.rTime.hour
+        else:
+            if ma>int(r[s]):
+                ma=int(r[s])
+    lis.append(time1)
+    lis.append(ma)
+    meandata.append(lis)
+    return meandata
+
+def mediancalcday(a,b):
+    mdate=request.args[0]
+    s=datakey(int(request.args[1]))
+    rows=daydata(a)
+    time1=rows.first().rTime.hour
+    mean=0.0
+    meandata=[]
+    count=0
+    lis=[]
+    lis1=[]
+    for r in rows:
+        count=count+1
+        if r.rTime.hour!=time1:
+            le=len(lis1)
+            if le%2==0:
+                med=(lis1[le/2]+lis1[le/2-1])/2
+                meandata.append([time1,med])
+            else:
+                meandata.append([time1,round(lis1[le/2],2)])
+            time1=r.rTime.hour
+        else:
+            lis1.append(float(r[s]))
+    le=len(lis1)
+    if le%2==0:
+            med=(lis1[le/2]+lis1[le/2-1])/2
+            meandata.append([time1,round(med,2)])
+    else:
+            meandata.append([time1,round(lis1[le/2],2)])
+    return meandata
+
+def devcalcday(a,b):
+    import math
+    s=datakey(int(b))
+    rows=daydata(a)
+    time1=rows.first().rTime.hour
+    mean=0.0
+    meandata=[]
+    count=-1
+    lis=[]
+    a=[]
+    b=[]
+    k=0
+    k1=0
+    for r in rows:
+        count=count+1
+        if r.rTime.hour!=time1:
+            lis.append(time1)
+            m=int(0)
+            mean=mean/count
+            for i in range(k,k1):
+                    m+=(rows[i][s]-mean)*(rows[i][s]-mean)
+            if (k1-k)>0:
+                m=round(math.sqrt(m/(k1-k)),2)
+            k=k1
+            lis.append(m)
+            meandata.append(lis)
+            count=0
+            mean=float(r[s])
+            lis=[]
+            time1=r.rTime.hour
+        else:
+            mean=mean+float(r[s])
+            k1+=1
+    lis.append(time1)
+    m=int(0)
+    mean=mean/count
+    for i in range(k,k1+1):
+            m+=(rows[k][s]-mean)*(rows[k][s]-mean)
+    if (k1-k)>0:
+         m=m=round(math.sqrt(m/(k1-k)),2)
+    k=k1
+    lis.append(m)
+    meandata.append(lis)
+    return meandata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Main for Month'''
+
+
+def month():
+    form=SQLFORM.factory(Field("Select_Month",requires=IS_IN_SET([(1,'January'), (2,'February'), (3,'March'), (4,'April'), (5,'May'),(6,'June'), (7,'July'), (8,'August'), (9,'September'), (10,'October'),(11,'November'),(12,'December')])),Field('Data',requires=IS_IN_SET([(1,'Temperature'), (2,'Pressure'), (3,'Wind'), (4,'Humidity'), (5,'Rain')])),Field('Year',requires=IS_IN_SET([(1,'2014'), (2,'2015')]))).process()
+    if form.accepted:
+        redirect(URL('monthres',args=[form.vars.Select_Month,form.vars.Data,yearkey(int(form.vars.Year))]))
+    return locals()
+
+def monthres():
+    s=label(int(request.args[1]))
+    meandata=meanmonth(request.args[1],request.args[0],request.args[2])
+    maxdata=maxmonth(request.args[1],request.args[0],request.args[2])
+    mindata=minmonth(request.args[1],request.args[0],request.args[2])
+    meddata=medmonth(request.args[1],request.args[0],request.args[2])
+    devdata=devmonth(request.args[1],request.args[0],request.args[2])
+    return locals()
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Calculators for Month'''
+
+def meanmonth(a,b,c):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    m=int(b)
+    y=int(c)
+    rows=monthdata(m,y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.day
+    count=0
+    for r in rows:
+        if date1==r.rdate.day:
+                me+=r[ch]
+                count+=1
+        else:
+                me=me/count
+                mean.append([date1,round(me,2)])
+                me=0.0
+                count=0
+                date1=r.rdate.day
+    me=me/count
+    mean.append([date1,round(me,2)])
+    return mean
+def maxmonth(a,b,c):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    m=int(b)
+    y=int(c)
+    rows=monthdata(m,y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.day
+    ma=0
+    for r in rows:
+        if date1==r.rdate.day:
+                if ma<r[ch]:
+                    ma=r[ch]
+        else:
+                mean.append([date1,float(ma)])
+                ma=0
+                date1=r.rdate.day
+    mean.append([date1,float(ma)])
+    return mean
+
+def minmonth(a,b,c):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    m=int(b)
+    y=int(c)
+    rows=monthdata(m,y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.day
+    ma=10000.0
+    for r in rows:
+        if date1==r.rdate.day:
+                if ma>r[ch]:
+                    ma=r[ch]
+        else:
+                mean.append([date1,float(ma)])
+                ma=10000.0
+                date1=r.rdate.day
+    mean.append([date1,float(ma)])
+    return mean
+
+def medmonth(a,b,c):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    m=int(b)
+    y=int(c)
+    rows=monthdata(m,y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.day
+    count=0
+    for r in rows:
+        if date1==r.rdate.day:
+                lis.append(r[ch])
+                count+=1
+        else:
+                if count%2==0:
+                    me=(lis[count/2-1]+lis[count/2])/2.0
+                else:
+                    me=lis[count/2]
+                mean.append([date1,round(float(me),2)])
+                lis=[]
+                count=0
+                date1=r.rdate.day
+    if count%2==0:
+            me=(lis[count/2-1]+lis[count/2])/2.0
+    else:
+            me=lis[count/2]         
+    mean.append([date1,round(float(me),2)])
+    return mean
+def devmonth(a,b,c):
+    import math
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    m=int(b)
+    y=int(c)
+    rows=monthdata(m,y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.day
+    count=0
+    for r in rows:
+        if date1==r.rdate.day:
+                lis.append(r[ch])
+                me=me+r[ch]
+                count+=1
+        else:
+                me=me/count
+                k=0.0
+                for i in lis:
+                    k=k+((i-me)*(i-me))
+                k=k/count         
+                mean.append([date1,round(math.sqrt(k),2)])
+                lis=[]
+                count=0
+                date1=r.rdate.day
+    me=me/count
+    k=0.0
+    for i in lis:
+        k=k+((i-me)*(i-me))
+    k=k/count
+    mean.append([date1,round(math.sqrt(k),2)])
+    return mean
+
+
+
+
+
+
+
+
+
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Main for Year'''
+
+
+def year():
+    form=SQLFORM.factory(Field("Select_Year",requires=IS_IN_SET([(1,'2013'), (2,'2014'), (3,'2015')])),Field('Data',requires=IS_IN_SET([(1,'Temperature'), (2,'Pressure'), (3,'Wind'), (4,'Humidity'), (5,'Rain')]))).process()
+    if form.accepted:
+        redirect(URL('yearres',args=[form.vars.Data,yearkey2(int(form.vars.Select_Year))]))
+    return locals()
+
+def yearres():
+    from operator import itemgetter
+    s=label(int(request.args[0]))
+    meandata=sorted(meanyear(request.args[0],request.args[1]), key=itemgetter(0))
+    maxdata=sorted(maxyear(request.args[0],request.args[1]),key=itemgetter(0))
+    mindata=sorted(minyear(request.args[0],request.args[1]),key=itemgetter(0))
+    meddata=sorted(medyear(request.args[0],request.args[1]),key=itemgetter(0))
+    devdata=sorted(devyear(request.args[0],request.args[1]),key=itemgetter(0))
+    return locals()
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''
+
+'''Calculators for Year'''
+
+def meanyear(a,b):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    y=int(b)
+    rows=yeardata(y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.month
+    count=0
+    for r in rows:
+        if date1==r.rdate.month:
+                me+=r[ch]
+                count+=1
+        else:
+                me=me/count
+                mean.append([date1,round(me,2)])
+                me=0.0
+                count=0
+                date1=r.rdate.month
+    me=me/count
+    mean.append([date1,round(me,2)])
+    return mean
+
+def maxyear(a,b):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    y=int(b)
+    rows=yeardata(y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.month
+    ma=0
+    for r in rows:
+        if date1==r.rdate.month:
+                if ma<r[ch]:
+                    ma=r[ch]
+        else:
+                mean.append([date1,float(ma)])
+                ma=0
+                date1=r.rdate.month
+    mean.append([date1,float(ma)])
+    return mean
+
+def minyear(a,b):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    y=int(b)
+    rows=yeardata(y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.month
+    ma=10000.0
+    for r in rows:
+        if date1==r.rdate.month:
+                if ma>r[ch]:
+                    ma=r[ch]
+        else:
+                mean.append([date1,float(ma)])
+                ma=10000.0
+                date1=r.rdate.month
+    mean.append([date1,float(ma)])
+    return mean
+
+def medyear(a,b):
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    y=int(b)
+    rows=yeardata(y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.month
+    count=0
+    for r in rows:
+        if date1==r.rdate.month:
+                lis.append(r[ch])
+                count+=1
+        else:
+                if count%2==0:
+                    me=(lis[count/2-1]+lis[count/2])/2.0
+                else:
+                    me=lis[count/2]
+                mean.append([date1,float(me)])
+                lis=[]
+                count=0
+                date1=r.rdate.month
+    if count%2==0:
+            me=(lis[count/2-1]+lis[count/2])/2.0
+    else:
+            me=lis[count/2]         
+    mean.append([date1,float(me)])
+    return mean
+
+def devyear(a,b):
+    import math
+    mean=[[0,0]]
+    n=int(a)
+    ch=datakey(n)
+    y=int(b)
+    rows=yeardata(y)
+    s=ch
+    me=float(0)
+    lis=[]
+    date1=rows.first().rdate.month
+    count=0
+    for r in rows:
+        if date1==r.rdate.month:
+                lis.append(r[ch])
+                me=me+r[ch]
+                count+=1
+        else:
+                me=me/count
+                k=0.0
+                for i in lis:
+                    k=k+((i-me)*(i-me))
+                k=k/count         
+                mean.append([date1,round(math.sqrt(k),2)])
+                lis=[]
+                count=0
+                date1=r.rdate.month
+    me=me/count
+    k=0.0
+    for i in lis:
+        k=k+((i-me)*(i-me))
+    k=k/count
+    mean.append([date1,round(math.sqrt(k),2)])
+    return mean
+'''--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'''

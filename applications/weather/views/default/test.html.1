@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>IIIT-Sri City Weather</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href={{=URL('static','css',args=['bootstrap.min.css'])}} type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href={{=URL('static','css',args=['animate.min.css'])}} type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href={{=URL('static','css',args=['creative.css'])}} type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+google.load('visualization', '1.0', {packages: ['corechart']});
+google.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Day');
+      data.addColumn('number', '{{=s}}');
+
+      data.addRows({{=str(meandata)}});
+
+      var options = {
+        hAxis: {
+          title: 'Days'
+        },
+        vAxis: {
+          title: 'Mean {{=s}} values'
+        }
+      };
+    
+    
+      var data1 = new google.visualization.DataTable();
+      data1.addColumn('number', 'Day');
+      data1.addColumn('number', '{{=s}}');
+
+      data1.addRows({{=str(maxdata)}});
+
+      var options1 = {
+        hAxis: {
+          title: 'Days'
+        },
+        vAxis: {
+          title: 'Maximum {{=s}} values'
+        }
+      };
+    
+    
+    var data2 = new google.visualization.DataTable();
+      data2.addColumn('number', 'Day');
+      data2.addColumn('number', '{{=s}}');
+
+      data2.addRows({{=str(mindata)}});
+
+      var options2 = {
+        hAxis: {
+          title: 'Days'
+        },
+        vAxis: {
+          title: 'Minimum {{=s}} values'
+        }
+      };
+
+       var data3 = new google.visualization.DataTable();
+       data3.addColumn('number', 'Day');
+      data3.addColumn('number', '{{=s}}');
+      data3.addRows({{=str(meddata)}});
+      var options3 = {
+        hAxis: {
+          title: 'Days'
+        },
+        vAxis: {
+          title: 'Median {{=s}} values'
+        }
+      };
+
+      var data4 = new google.visualization.DataTable();
+       data4.addColumn('number', 'Day');
+      data4.addColumn('number', '{{=s}}');
+      data4.addRows({{=str(devdata)}});
+      var options4 = {
+        hAxis: {
+          title: 'Days'
+        },
+        vAxis: {
+          title: 'Standard Deviation {{=s}} values'
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+      var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+      chart1.draw(data1, options1);
+      
+      var chart2 = new google.visualization.LineChart(document.getElementById('chart_div3'));
+      chart2.draw(data2, options2);
+      var chart3 = new google.visualization.LineChart(document.getElementById('chart_div4'));
+      chart3.draw(data3, options3);
+      var chart4 = new google.visualization.LineChart(document.getElementById('chart_div5'));
+      chart4.draw(data4, options4);
+      
+    }
+</script>
+
+
+</head>
+
+<body id="page-top">
+    <style>.navbar-default{
+        background-color:#333;
+    }</style>
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="{{=URL('index')}}"><i class="fa fa-cloud"></i>Celsius</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="{{=URL('day')}}">By Date</a>
+                    </li><li>
+                        <a class="page-scroll" href="{{=URL('month')}}">By Month</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="{{=URL('year')}}">By Year</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    
+
+
+    
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 text-center">
+                        <h2 class="section-heading">Results for {{=month}} {{=year}}</h2>
+                        <hr class="primary">
+                        <p>Here are the results for the month requested<br>There are around 30 readings, one for each day of the month</p>
+                    </div>
+            </div><br><br>
+                        <div id="chart_div"></div><br>
+            <div id="chart_div1"></div><br>
+            <div id="chart_div3"></div><br>
+            <div id="chart_div4"></div><br>
+            <div id="chart_div5"></div><br>
+                    
+            
+        </div>
+ </section>
+    
+    <!-- jQuery -->
+    <script src={{=URL('static','js',args=['jquery.js'])}}></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src={{=URL('static','js',args=['bootstrap.min.js'])}}></script>
+
+    <!-- Plugin JavaScript -->
+    <script src={{=URL('static','js',args=['jquery.easing.min.js'])}}></script>
+    <script src={{=URL('static','js',args=['jquery.fittext.js'])}}></script>
+    <script src={{=URL('static','js',args=['wow.min.js'])}}></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src={{=URL('static','js',args=['creative.js'])}}></script>
+
+</body>
+
+</html>

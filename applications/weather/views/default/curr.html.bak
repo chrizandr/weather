@@ -1,0 +1,200 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
+<script>
+    google.setOnLoadCallback(startChart);
+    startChart();
+      function startChart() {
+       
+          var datatemp = google.visualization.arrayToDataTable([
+          ['Current Temperature', 'Degrees Celcius'],
+           [' ', 0], [' ', 0],
+            ['Temp', {{=stemp}}],
+
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datawind = google.visualization.arrayToDataTable([
+          ['Current Wind Speed', 'Km/h'],
+           [' ', 0], [' ', 0],
+            ['Wind', {{=swind}}],
+
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datahumid = google.visualization.arrayToDataTable([
+          ['Current Humidity', 'Percentage %'],
+           [' ', 0], [' ', 0],
+            ['Humidity', {{=shumid}}],
+
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datapress = google.visualization.arrayToDataTable([
+          ['Current Air Pressure', 'Bar'],
+           [' ', 0], [' ', 0],
+            ['Pressure', {{=spress}}],
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datarain = google.visualization.arrayToDataTable([
+          ['Current Rain', 'Centimeter'],
+           [' ', 0], [' ', 0],
+            ['Rain', {{=srain}}],
+             [' ', 0],
+            [' ', 0],
+        ]);
+          var optionstemp = {      
+              legend: {position: 'none'},
+              title: 'Temperature',
+              vAxes: {
+            0: {
+                title: 'Degrees(C)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          
+          var optionswind = {     
+                legend: {position: 'none'},
+              title: 'Wind Speed',
+              vAxes: {
+            0: {
+                title: 'Speed(km/h)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          
+          var optionshumid = {    
+                legend: {position: 'none'},
+              title: 'Humidity',
+              vAxes: {
+            0: {
+                title: 'Percentage(%)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          
+          var optionspress = {       
+                legend: {position: 'none'},
+              title: 'Pressure',
+              vAxes: {
+            0: {
+                title: 'Bar(bar)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          var optionsrain = {       
+                legend: {position: 'none'},
+              title: 'Rain',
+              vAxes: {
+            0: {
+                title: 'Centimeter(cm)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById('columncharttemp'));
+          chart.draw(datatemp, optionstemp);
+  var chart1 = new google.visualization.ColumnChart(document.getElementById('columnchartwind'));
+          chart1.draw(datawind, optionswind);
+          
+          var chart2 = new google.visualization.ColumnChart(document.getElementById('columncharthumid'));
+          chart2.draw(datahumid, optionshumid);
+          
+          var chart3 = new google.visualization.ColumnChart(document.getElementById('columnchartpress'));
+          chart3.draw(datapress, optionspress);
+
+          var chart4 = new google.visualization.ColumnChart(document.getElementById('columnchartrain'));
+          chart4.draw(datarain, optionsrain);
+      }
+    
+</script>
+    
+</head>
+<body>
+<div id="columncharttemp" style="margin-left:100px; width:500px; height:250px; display:inline-block;"></div>
+    <div id="columnchartwind" style="width:500px; height:250px; display:inline-block;"></div><br>
+    <div id="columncharthumid" style="margin-left:100px; width:500px; height:250px; display:inline-block;"></div>
+    <div id="columnchartpress" style="width:500px; height:250px; display:inline-block;"></div><br>
+    <div id="columnchartrain" style="margin-left:300px;width:500px; height:250px; display:inline-block;"></div>
+    
+</body>
+</body>

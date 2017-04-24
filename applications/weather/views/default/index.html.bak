@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>IIIT-Sri City Weather</title>
+
+    <link rel="stylesheet" href={{=URL('static','css',args=['bootstrap.min.css'])}} type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href={{=URL('static','css',args=['animate.min.css'])}} type="text/css">
+
+    <link rel="stylesheet" href={{=URL('static','css',args=['creative.css'])}} type="text/css">
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
+<script>
+    google.setOnLoadCallback(startChart);
+    startChart();
+      function startChart() {
+       
+          var datatemp = google.visualization.arrayToDataTable([
+          ['Current Temperature', 'Degrees Celcius'],
+           [' ', 0], [' ', 0],
+            ['Temp', {{=stemp}}],
+
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datawind = google.visualization.arrayToDataTable([
+          ['Current Wind Speed', 'Km/h'],
+           [' ', 0], [' ', 0],
+            ['Wind', {{=swind}}],
+
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datahumid = google.visualization.arrayToDataTable([
+          ['Current Humidity', 'Percentage %'],
+           [' ', 0], [' ', 0],
+            ['Humidity', {{=shumid}}],
+
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datapress = google.visualization.arrayToDataTable([
+          ['Current Air Pressure', 'Bar'],
+           [' ', 0], [' ', 0],
+            ['Pressure', {{=spress}}],
+             [' ', 0],
+            [' ', 0],
+        ]);
+
+        var datarain = google.visualization.arrayToDataTable([
+          ['Current Rain', 'Centimeter'],
+           [' ', 0], [' ', 0],
+            ['Rain', {{=srain}}],
+             [' ', 0],
+            [' ', 0],
+        ]);
+          var optionstemp = {      
+              legend: {position: 'none'},
+              title: 'Temperature',
+              vAxes: {
+            0: {
+                title: 'Degrees(C)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          
+          var optionswind = {     
+                legend: {position: 'none'},
+              title: 'Wind Speed',
+              vAxes: {
+            0: {
+                title: 'Speed(km/h)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          
+          var optionshumid = {    
+                legend: {position: 'none'},
+              title: 'Humidity',
+              vAxes: {
+            0: {
+                title: 'Percentage(%)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          
+          var optionspress = {       
+                legend: {position: 'none'},
+              title: 'Pressure',
+              vAxes: {
+            0: {
+                title: 'Bar(bar)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          var optionsrain = {       
+                legend: {position: 'none'},
+              title: 'Rain',
+              vAxes: {
+            0: {
+                title: 'Centimeter(cm)',
+                
+                },
+            1: {
+                title: 'apparent magnitude',
+                
+            },
+          },
+              series: {
+            0:{
+                targetAxisIndex:0,
+                
+                },
+            1:{
+                targetAxisIndex:1,
+                
+                },
+            },
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById('columncharttemp'));
+          chart.draw(datatemp, optionstemp);
+  var chart1 = new google.visualization.ColumnChart(document.getElementById('columnchartwind'));
+          chart1.draw(datawind, optionswind);
+          
+          var chart2 = new google.visualization.ColumnChart(document.getElementById('columncharthumid'));
+          chart2.draw(datahumid, optionshumid);
+          
+          var chart3 = new google.visualization.ColumnChart(document.getElementById('columnchartpress'));
+          chart3.draw(datapress, optionspress);
+
+          var chart4 = new google.visualization.ColumnChart(document.getElementById('columnchartrain'));
+          chart4.draw(datarain, optionsrain);
+      }
+    
+</script>
+
+
+</head>
+
+<body id="page-top">
+
+    <style>
+        .bg-primary{
+            padding-bottom:50px;
+            padding-top:50px;
+        }
+    </style>
+
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12  text-center">
+                    <div class="pull-left"> <img src="http://sricity.ideaplus.in/wp-content/uploads/2015/11/SriCity-Logo-FULL.png" height="170" width="200" align="left" ></div>
+                    <div class="pull-right">   <img src={{=URL('static','img',args=['sricity.png'])}} height="200" width="200" align="right"></div><br><br><br>
+                    <h2 class="section-heading"><font face="Times New Roman" size="20"><b>SMART WEATHER STATION</b></font></h2>
+                    <h3 class="section-heading"><font face="Times New Roman" size="5"><b>[Maintained by CSC, IIIT Chitoor, Sri City]</b></font></h3>
+                    
+                
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading"><a href="{{=URL('history')}}" class="btn btn-default btn-xl">&nbsp;&nbsp;Historical Data&nbsp;&nbsp;</a></h2>
+                    
+                    <h4 class="text-faded">Click for Year/Month/Day wise graphs</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Current Weather Conditions {{=dat}}</h2><br>
+                    <h3 class="section-heading">Last Recorded at {{=tim}} hours</h3>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div id="columncharttemp" style="margin-left:150px; width:500px; height:250px; display:inline-block;"></div>
+    <div id="columnchartwind" style="width:500px; height:250px; display:inline-block;"></div><br>
+    <div id="columncharthumid" style="margin-left:150px; width:500px; height:250px; display:inline-block;"></div>
+    <div id="columnchartpress" style="width:500px; height:250px; display:inline-block;"></div><br>
+    <div id="columnchartrain" style="margin-left:400px;width:500px; height:250px; display:inline-block;"></div>
+    </section>
+
+    
+   <style>#contact{padding-bottom:20px;}</style>
+
+    
+    <script src={{=URL('static','js',args=['jquery.js'])}}></script>
+    <script src={{=URL('static','js',args=['bootstrap.min.js'])}}></script>
+
+    <script src={{=URL('static','js',args=['jquery.easing.min.js'])}}></script>
+    <script src={{=URL('static','js',args=['jquery.fittext.js'])}}></script>
+    <script src={{=URL('static','js',args=['wow.min.js'])}}></script>
+
+    <script src={{=URL('static','js',args=['creative.js'])}}></script>
+
+</body>
+
+</html>

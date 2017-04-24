@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+db.define_table('weath14',
+            Field('rdate','date'),
+            Field('rTime','time'),
+            Field('rTemp','double'),
+            Field('Press','double'),
+            Field('Humidity','double'),
+            Field('rWind','double'),
+            Field('rRain','double'))

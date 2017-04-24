@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>IIIT-Sri City Weather</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href={{=URL('static','css',args=['bootstrap.min.css'])}} type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href={{=URL('static','css',args=['animate.min.css'])}} type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href={{=URL('static','css',args=['creative.css'])}} type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+google.load('visualization', '1.0', {packages: ['corechart']});
+google.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Time');
+      data.addColumn('number', 'Temperature');
+
+      data.addRows({{=str(tempdata)}});
+
+      var options = {
+       legend: {position: 'top', alignment: 'end'},
+ hAxis: {
+          title: 'Hours'
+        },
+        vAxis: {
+          title: '{{=s}} Temperature values'
+        }
+      };
+    
+    
+      var data1 = new google.visualization.DataTable();
+      data1.addColumn('number', 'Time');
+      data1.addColumn('number', 'Pressure');
+
+      data1.addRows({{=str(pressdata)}});
+
+      var options1 = {
+        legend: {position: 'top', alignment: 'end'},
+hAxis: {
+          title: 'Hours'
+        },
+        vAxis: {
+          title: '{{=s}} Pressure values'
+        }
+      };
+    
+    
+    var data2 = new google.visualization.DataTable();
+      data2.addColumn('number', 'Time');
+      data2.addColumn('number', 'Wind');
+
+      data2.addRows({{=str(winddata)}});
+
+      var options2 = {
+        legend: {position: 'top', alignment: 'end'},
+hAxis: {
+          title: 'Hours'
+        },
+        vAxis: {
+          title: '{{=s}} Wind values'
+        }
+      };
+
+       var data3 = new google.visualization.DataTable();
+       data3.addColumn('number', 'Time');
+      data3.addColumn('number', 'Humidity');
+      data3.addRows({{=str(humiddata)}});
+      var options3 = {
+        legend: {position: 'top', alignment: 'end'},
+hAxis: {
+          title: 'Hours'
+        },
+        vAxis: {
+          title: '{{=s}} Humidity values'
+        }
+      };
+                                                                                                                                                                                                                                                                                
+      var data4 = new google.visualization.DataTable();
+       data4.addColumn('number', 'Time');
+      data4.addColumn('number', 'Rain');
+      data4.addRows({{=str(raindata)}});
+      var options4 = {
+        legend: {position: 'top', alignment: 'end'},
+hAxis: {
+          title: 'Hours'
+        },
+        vAxis: {
+          title: '{{=s}} Rain values'
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+      var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+      chart1.draw(data1, options1);
+      
+      var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
+      chart2.draw(data2, options2);
+      var chart3 = new google.visualization.LineChart(document.getElementById('chart_div3'));
+      chart3.draw(data3, options3);
+      var chart4 = new google.visualization.LineChart(document.getElementById('chart_div4'));
+      chart4.draw(data4, options4);
+      
+    }
+</script>
+
+
+</head>
+
+<body id="page-top">
+    <style>.navbar-default{
+        background-color:#333;
+    }</style>
+    
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="{{=URL('index')}}"><i class="fa fa-cloud"></i>Home</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    
+
+{{=tempdata}}
+    
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 text-center">
+                        <h2 class="section-heading">Results for  {{=Date}}</h2>
+                        <hr class="primary">
+                        <p>Here are the results for the date requested<br>There are 24 readings, one for each hour of the day</p>
+                    </div>
+            </div><br><br>
+                        <div id="chart_div"></div><br>
+            <div id="chart_div1"></div><br>
+            <div id="chart_div2"></div><br>
+            <div id="chart_div3"></div><br>
+            <div id="chart_div4"></div><br>
+                    
+            
+        </div>
+ </section>
+    
+    <!-- jQuery -->
+    <script src={{=URL('static','js',args=['jquery.js'])}}></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src={{=URL('static','js',args=['bootstrap.min.js'])}}></script>
+
+    <!-- Plugin JavaScript -->
+    <script src={{=URL('static','js',args=['jquery.easing.min.js'])}}></script>
+    <script src={{=URL('static','js',args=['jquery.fittext.js'])}}></script>
+    <script src={{=URL('static','js',args=['wow.min.js'])}}></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src={{=URL('static','js',args=['creative.js'])}}></script>
+
+</body>
+
+</html>

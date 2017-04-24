@@ -1,0 +1,12 @@
+{{extend 'layout.html'}}
+       <button onclick='myFunction();'>Execute</button> 
+<script type="text/javascript">
+
+
+    function myFunction();{
+        alert("ssjslsdf";)
+    }
+
+window.alert("columns");
+document.write(5 + 6);
+</script>
