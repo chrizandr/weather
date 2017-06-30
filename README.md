@@ -1,4 +1,5 @@
 ## Sri City Smart Weather Website
+Joint effort by [Chris Andrew](https://github.com/chrizandr) and [Santhoshini Gongidi](https://github.com/Sanny26)
 A simple yet efficient web interface for people with little or no prior computer knowledge to be able to access and review collected data from the Sri City Smart Weather Station in a format that is easy to comprehend and assess.
 
 To build an efficient, easy to use web-interface that is easily operable and maintainable.
