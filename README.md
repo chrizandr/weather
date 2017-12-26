@@ -16,13 +16,13 @@ To build an efficient, easy to use web-interface that is easily operable and mai
 
 ##### Displays live weather conditions updated hourly
 
-![alt text](https://writelatex.s3.amazonaws.com/wcxqqwhrzcxg/uploads/832/5164727/1.png)
+![alt text](https://github.com/chrizandr/weather/blob/master/1.png)
 
 ##### Shows historical data in a year/month/day wise format
-![alt text](https://writelatex.s3.amazonaws.com/wcxqqwhrzcxg/uploads/839/5164863/1.png)
+![alt text](https://github.com/chrizandr/weather/blob/master/2.png)
 
 ##### Data flow and system architecture
-![alt text](https://writelatex.s3.amazonaws.com/wcxqqwhrzcxg/uploads/209/4927441/2.png)
+![alt text](https://github.com/chrizandr/weather/blob/master/3.jpeg)
 
 ### Dependencies
 ```
